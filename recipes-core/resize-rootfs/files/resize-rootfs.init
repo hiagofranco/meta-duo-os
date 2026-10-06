@@ -12,12 +12,10 @@ case "$1" in
 start)
     echo "Growing the root filesystem..."
     # Only needed once
-    @SBINDIR@/resize-rootfs && rm -f /etc/rc?.d/S??resize-rootfs
-    if [ $? -eq 0 ]; then
-        echo "Command finished successfully. Rebooting..."
-        reboot -f
+    if @SBINDIR@/resize-rootfs; then
+        rm -f /etc/rc?.d/S??resize-rootfs
     else
-        echo "resize-rootfs failed, not rebooting."
+        echo "resize-rootfs failed, will retry on next boot."
     fi
     ;;
 esac
