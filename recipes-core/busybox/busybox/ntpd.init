@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          ntpd
+# Required-Start:    $network
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: BusyBox NTP daemon
+### END INIT INFO
+
+DAEMON=/usr/sbin/ntpd
+PIDFILE=/run/ntpd.pid
+NTP_SERVERS="pool.ntp.org"
+
+[ -r /etc/default/ntpd ] && . /etc/default/ntpd
+[ -x "$DAEMON" ] || exit 0
+
+PEERS=""
+for s in $NTP_SERVERS; do
+    PEERS="$PEERS -p $s"
+done
+
+case "$1" in
+start)
+    echo -n "Starting ntpd: "
+    # -n: fica em foreground; o start-stop-daemon cuida do background e do pidfile
+    start-stop-daemon -S -b -m -p $PIDFILE -x $DAEMON -- -n $PEERS
+    echo "OK"
+    ;;
+stop)
+    echo -n "Stopping ntpd: "
+    start-stop-daemon -K -p $PIDFILE -x $DAEMON
+    rm -f $PIDFILE
+    echo "OK"
+    ;;
+restart)
+    $0 stop
+    $0 start
+    ;;
+*)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0

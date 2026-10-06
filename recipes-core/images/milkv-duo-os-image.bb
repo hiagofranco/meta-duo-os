@@ -6,6 +6,8 @@ IMAGE_INSTALL = "packagegroup-core-boot \
                  resize-rootfs \
                  ${CORE_IMAGE_EXTRA_INSTALL}"
 
+IMAGE_INSTALL:append:milkv-duo = " busybox-ntpd"
+
 IMAGE_FEATURES += "ssh-server-openssh package-management"
 IMAGE_FEATURES:append:milkv-duo = " ssh-server-dropbear"
 IMAGE_FEATURES:remove:milkv-duo = "ssh-server-openssh"
