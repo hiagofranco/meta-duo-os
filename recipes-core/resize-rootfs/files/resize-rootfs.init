@@ -1,0 +1,23 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          resize-rootfs
+# Required-Start:    checkroot
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Grow the root partition and filesystem to fill the SD card
+### END INIT INFO
+
+case "$1" in
+start)
+    echo "Growing the root filesystem..."
+    # Only needed once
+    @SBINDIR@/resize-rootfs && rm -f /etc/rc?.d/S??resize-rootfs
+    if [ $? -eq 0 ]; then
+        echo "Command finished successfully. Rebooting..."
+        reboot -f
+    else
+        echo "resize-rootfs failed, not rebooting."
+    fi
+    ;;
+esac
