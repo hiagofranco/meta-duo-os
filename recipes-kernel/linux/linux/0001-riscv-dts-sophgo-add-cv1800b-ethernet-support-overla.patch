@@ -1,0 +1,66 @@
+From 22ec0c9a31efda30b4f2e1f97ee791dbbe9a7079 Mon Sep 17 00:00:00 2001
+From: Hiago De Franco <hfranco@baylibre.com>
+Date: Thu, 1 Oct 2026 16:38:30 -0300
+Subject: [PATCH] riscv: dts: sophgo: add cv1800b ethernet support overlay
+
+The CV1800B SoC has a DWMAC controller connected to an internal 10/100
+Ethernet PHY. Both the MAC (gmac0) and the MDIO multiplexer used to
+reach the internal PHY are already described in cv180x.dtsi, but are
+disabled by default.
+
+Enable gmac0 and the MDIO multiplexer to make ethernet work.
+
+Tested on a Milk-V Duo (CV1800B) with its IO base board. The link comes
+up at 100Mbps/Full and the interface gets an address via DHCP.
+
+This can not be enabled by default as others may want to use the same
+pins as GPIO, that is the reason an overlay is being used.
+
+Upstream-Status: Submitted [https://lore.kernel.org/all/20261001-milkv-duo-eth-overlay-v1-1-78bc1454f35b@baylibre.com/]
+Reviewed-by: Chen-Yu Yeh <chenyou910331@gmail.com>
+Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
+---
+ arch/riscv/boot/dts/sophgo/Makefile             |  3 +++
+ .../boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso  | 17 +++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso
+
+diff --git a/arch/riscv/boot/dts/sophgo/Makefile b/arch/riscv/boot/dts/sophgo/Makefile
+index d5c80d4ff005..adea990ad912 100644
+--- a/arch/riscv/boot/dts/sophgo/Makefile
++++ b/arch/riscv/boot/dts/sophgo/Makefile
+@@ -1,5 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo.dtb
++cv1800b-milkv-duo-eth-dtbs := cv1800b-milkv-duo.dtb cv1800b-milkv-duo-eth.dtbo
++dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtb
++dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtbo
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1812h-huashan-pi.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2000-milkv-duo-s.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-licheerv-nano-b.dtb
+diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso
+new file mode 100644
+index 000000000000..52c85b4e0155
+--- /dev/null
++++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Enable ethernet support on Milk-V Duo (CV1800B).
++ *
++ * Copyright (c) 2026, Hiago De Franco <hfranco@baylibre.com>
++ */
++
++/dts-v1/;
++/plugin/;
++
++&gmac0 {
++	status = "okay";
++};
++
++&mdio {
++	status = "okay";
++};
+-- 
+2.53.0
+
