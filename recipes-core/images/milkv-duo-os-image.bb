@@ -4,6 +4,7 @@ IMAGE_INSTALL = "packagegroup-core-boot \
                  fastfetch \
                  resize-rootfs \
                  libgpiod-tools \
+                 duo-pinmux \
                  ${CORE_IMAGE_EXTRA_INSTALL}"
 
 IMAGE_INSTALL:append:milkv-duo = " busybox-ntpd"

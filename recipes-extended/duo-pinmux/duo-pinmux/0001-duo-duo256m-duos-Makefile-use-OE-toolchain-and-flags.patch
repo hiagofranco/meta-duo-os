@@ -1,0 +1,77 @@
+From cd88837c894c0d453364d24d40235dc56f55b0f9 Mon Sep 17 00:00:00 2001
+From: Hiago De Franco <hfranco@baylibre.com>
+Date: Thu, 8 Oct 2026 17:20:36 -0300
+Subject: [PATCH] duo/duo256m/duos: Makefile: use OE toolchain and flags
+
+Remove the hardcoded CC and the T-Head vendor toolchain specific CFLAGS,
+allowing bitbake to use its own toolchain and tune flags. Also pass
+LDFLAGS when linking. Fixes:
+
+| make: riscv64-unknown-linux-musl-gcc: No such file or directory
+| riscv64-oe-linux-musl-gcc: error: '-march=rv64imafdcv0p7xthead': extension 'xthead' starts with 'x' but is unsupported non-standard extension
+
+Upstream-Status: Inappropriate [oe specific]
+Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
+---
+ duo/Makefile     | 6 +-----
+ duo256m/Makefile | 6 +-----
+ duos/Makefile    | 6 +-----
+ 3 files changed, 3 insertions(+), 15 deletions(-)
+
+diff --git a/duo/Makefile b/duo/Makefile
+index 8a4d64c..78830e7 100644
+--- a/duo/Makefile
++++ b/duo/Makefile
+@@ -1,12 +1,8 @@
+-CC = riscv64-unknown-linux-musl-gcc
+-
+ source  = duo_pinmux.c devmem.c
+ object  = $(source:%.cc=%.o)
+ 
+-CFLAGS += -mcpu=c906fdv -march=rv64imafdcv0p7xthead -mcmodel=medany -mabi=lp64d -static
+-
+ all: $(object)
+-	$(CC) $(CFLAGS) $(object) -o duo-pinmux
++	$(CC) $(CFLAGS) $(LDFLAGS) $(object) -o duo-pinmux
+ 
+ %.o: %.c
+ 	$(CC) $(CFLAGS) -c $<
+diff --git a/duo256m/Makefile b/duo256m/Makefile
+index 8a4d64c..78830e7 100644
+--- a/duo256m/Makefile
++++ b/duo256m/Makefile
+@@ -1,12 +1,8 @@
+-CC = riscv64-unknown-linux-musl-gcc
+-
+ source  = duo_pinmux.c devmem.c
+ object  = $(source:%.cc=%.o)
+ 
+-CFLAGS += -mcpu=c906fdv -march=rv64imafdcv0p7xthead -mcmodel=medany -mabi=lp64d -static
+-
+ all: $(object)
+-	$(CC) $(CFLAGS) $(object) -o duo-pinmux
++	$(CC) $(CFLAGS) $(LDFLAGS) $(object) -o duo-pinmux
+ 
+ %.o: %.c
+ 	$(CC) $(CFLAGS) -c $<
+diff --git a/duos/Makefile b/duos/Makefile
+index 8a4d64c..78830e7 100644
+--- a/duos/Makefile
++++ b/duos/Makefile
+@@ -1,12 +1,8 @@
+-CC = riscv64-unknown-linux-musl-gcc
+-
+ source  = duo_pinmux.c devmem.c
+ object  = $(source:%.cc=%.o)
+ 
+-CFLAGS += -mcpu=c906fdv -march=rv64imafdcv0p7xthead -mcmodel=medany -mabi=lp64d -static
+-
+ all: $(object)
+-	$(CC) $(CFLAGS) $(object) -o duo-pinmux
++	$(CC) $(CFLAGS) $(LDFLAGS) $(object) -o duo-pinmux
+ 
+ %.o: %.c
+ 	$(CC) $(CFLAGS) -c $<
+-- 
+2.53.0
+
