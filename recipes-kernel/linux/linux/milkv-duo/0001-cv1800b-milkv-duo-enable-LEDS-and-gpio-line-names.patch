@@ -1,0 +1,81 @@
+From 14a4140cd254ae849a8d4ab54f1ee2db8f850bc6 Mon Sep 17 00:00:00 2001
+From: Hiago De Franco <hfranco@baylibre.com>
+Date: Wed, 7 Oct 2026 15:25:36 -0300
+Subject: [PATCH] cv1800b-milkv-duo: enable LEDS and gpio-line-names
+
+Upstream-Status: Pending
+Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
+---
+ .../boot/dts/sophgo/cv1800b-milkv-duo.dts     | 42 +++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
+index 0e6d79e6e3a4..3588022dded6 100644
+--- a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
++++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
+@@ -6,6 +6,8 @@
+ /dts-v1/;
+ 
+ #include "cv1800b.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/leds/common.h>
+ 
+ / {
+ 	model = "Milk-V Duo";
+@@ -23,6 +25,17 @@ chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
++	leds {
++		compatible = "gpio-leds";
++
++		led-0 {
++			gpios = <&portc 24 GPIO_ACTIVE_HIGH>;
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_STATUS;
++			linux,default-trigger = "timer";
++		};
++	};
++
+ 	reserved-memory {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -84,6 +97,35 @@ sdhci0-cd-pins {
+ 	};
+ };
+ 
++&porta {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",			/* 0-7 */
++		"", "", "", "", "", "", "GP14", "GP15",		/* 8-15 */
++		"GP12", "GP13", "", "", "", "", "GP18", "GP16",	/* 16-23 */
++		"GP17", "GP19", "GP21", "GP20", "GP0", "GP1";	/* 24-29 */
++};
++
++&portb {
++	gpio-line-names =
++		"", "", "", "GP26", "", "", "GP27";	/* 0-6 */
++};
++
++&portc {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",		/* 0-7 */
++		"", "GP10", "GP11", "", "", "", "", "",	/* 8-15 */
++		"", "", "", "", "", "", "", "",	"LED";	/* 16-24 */
++};
++
++/* PWR_GPIO */
++&porte {
++      gpio-line-names =
++              "", "", "", "", "GP22", "", "", "",		/* 0-7 */
++              "", "", "", "", "", "", "", "",			/* 8-15 */
++              "", "", "GP9", "GP4", "GP5", "GP8", "GP7", "GP6",	/* 16-23 */
++              "", "GP3", "GP2";					/* 24-26 */
++};
++
+ &sdhci0 {
+ 	pinctrl-0 = <&sdhci0_cfg>;
+ 	pinctrl-names = "default";
+-- 
+2.53.0
+
