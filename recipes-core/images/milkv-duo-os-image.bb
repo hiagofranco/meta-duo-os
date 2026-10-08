@@ -1,9 +1,9 @@
 SUMMARY = "Standard full-featured Linux system for MilkV-Duo boards"
 
 IMAGE_INSTALL = "packagegroup-core-boot \
-                 packagegroup-core-full-cmdline \
                  fastfetch \
                  resize-rootfs \
+                 libgpiod-tools \
                  ${CORE_IMAGE_EXTRA_INSTALL}"
 
 IMAGE_INSTALL:append:milkv-duo = " busybox-ntpd"
