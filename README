@@ -1,41 +1,94 @@
-This README file contains information on the contents of the meta-duo-os layer.
+meta-duo-os
+===========
 
-Please see the corresponding sections below for details.
+Yocto/OpenEmbedded layer for Duo-OS, a small Linux distribution for the Milk-V
+Duo family of RISC-V boards:
 
-Dependencies
-============
+  - Milk-V Duo      (Sophgo CV1800B, 64MB RAM)  MACHINE = "milkv-duo"
+  - Milk-V Duo256M  (Sophgo SG2002)             MACHINE = "milkv-duo256m"
+  - Milk-V DuoS     (Sophgo SG2000)             MACHINE = "milkv-duos"
 
-  URI: <first dependency>
-  branch: <branch name>
-
-  URI: <second dependency>
-  branch: <branch name>
-
-  .
-  .
-  .
-
-Patches
-=======
-
-Please submit any patches against the meta-duo-os layer to the xxxx mailing list (xxxx@zzzz.org)
-and cc: the maintainer:
-
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+This layer provides the distro configuration, the image recipe and a few
+board-specific customizations. The machine definitions and BSP come from
+meta-riscv.
 
 Table of Contents
 =================
 
-  I. Adding the meta-duo-os layer to your build
- II. Misc
+  I. Dependencies
+ II. Adding the meta-duo-os layer to your build
+III. Building the image
+ IV. Contents
+  V. Patches
 
 
-I. Adding the meta-duo-os layer to your build
-=================================================
+I. Dependencies
+===============
 
-Run 'bitbake-layers add-layer meta-duo-os'
+  URI: https://git.openembedded.org/openembedded-core
+  layers: meta
+  branch: master
 
-II. Misc
-========
+  URI: https://github.com/riscv/meta-riscv
+  branch: master
 
---- replace with specific information about the meta-duo-os layer ---
+  URI: https://git.openembedded.org/meta-openembedded
+  layers: meta-oe
+  branch: master
+
+II. Adding the meta-duo-os layer to your build
+==============================================
+
+From an initialized build environment:
+
+  bitbake-layers add-layer ../meta-openembedded/meta-oe
+  bitbake-layers add-layer ../meta-riscv
+  bitbake-layers add-layer ../meta-duo-os
+
+III. Building the image
+=======================
+
+Set the distro and machine in conf/local.conf or bitbake-config-build
+fragments:
+
+  DISTRO = "duo-os"
+  MACHINE = "milkv-duo"
+
+Then build the image:
+
+  bitbake milkv-duo-os-image
+
+Write the resulting .wic image to an SD card. On first boot the root partition
+is grown to fill the card.
+
+IV. Contents
+============
+
+Distro (conf/distro/duo-os.conf)
+  - Minimal DISTRO_FEATURES: acl, ipv4, ipv6, keyboard, vfat.
+  - systemd as the init manager, except on the original Milk-V Duo, which
+    uses musl and sysvinit to better fit in 64MB of RAM.
+
+Image (milkv-duo-os-image)
+  - SSH server (OpenSSH, or Dropbear on the Milk-V Duo), opkg package
+    management, fastfetch, libgpiod tools and duo-pinmux.
+  - NTP time sync with busybox ntpd on the Milk-V Duo.
+
+Recipes and appends
+  - resize-rootfs: grows the root partition and filesystem on first boot
+    (works with systemd and sysvinit).
+  - duo-pinmux: Milk-V pin multiplexing tool
+    (https://milkv.io/docs/duo/application-development/pinmux).
+  - linux-mainline: Ethernet device tree overlay, LEDs and GPIO line names
+    for the Milk-V Duo, /proc/config.gz, and some unused options disabled.
+  - u-boot: device tree overlay support and the U-Boot environment stored
+    on the FAT boot partition.
+  - base-files: custom per-board motd.
+  - init-ifupdown: DHCP on eth0.
+
+V. Patches
+==========
+
+Please submit patches against the meta-duo-os layer to the maintainer:
+
+Maintainer: Hiago De Franco <hfranco@baylibre.com>
