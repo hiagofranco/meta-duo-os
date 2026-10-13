@@ -1,16 +1,16 @@
-From 14a4140cd254ae849a8d4ab54f1ee2db8f850bc6 Mon Sep 17 00:00:00 2001
+From 11012ebc087810748b73c0de248f5a0fbb68fe6d Mon Sep 17 00:00:00 2001
 From: Hiago De Franco <hfranco@baylibre.com>
 Date: Wed, 7 Oct 2026 15:25:36 -0300
-Subject: [PATCH] cv1800b-milkv-duo: enable LEDS and gpio-line-names
+Subject: [PATCH 2/2] cv1800b-milkv-duo: enable LEDS and gpio-line-names
 
 Upstream-Status: Pending
 Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
 ---
- .../boot/dts/sophgo/cv1800b-milkv-duo.dts     | 42 +++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ .../boot/dts/sophgo/cv1800b-milkv-duo.dts     | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
 diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
-index 0e6d79e6e3a4..3588022dded6 100644
+index 02848bae2e16..9d736df9497a 100644
 --- a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
 +++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
 @@ -6,6 +6,8 @@
@@ -22,10 +22,11 @@ index 0e6d79e6e3a4..3588022dded6 100644
  
  / {
  	model = "Milk-V Duo";
-@@ -23,6 +25,17 @@ chosen {
+@@ -22,6 +24,28 @@ aliases {
+ 	chosen {
  		stdout-path = "serial0:115200n8";
  	};
- 
++
 +	leds {
 +		compatible = "gpio-leds";
 +
@@ -37,10 +38,20 @@ index 0e6d79e6e3a4..3588022dded6 100644
 +		};
 +	};
 +
- 	reserved-memory {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -84,6 +97,35 @@ sdhci0-cd-pins {
++	reserved-memory {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		coprocessor_rtos: region@83f40000 {
++			reg = <0x83f40000 0xc0000>;
++			no-map;
++		};
++	};
+ };
+ 
+ &osc {
+@@ -73,6 +97,35 @@ sdhci0-cd-pins {
  	};
  };
  

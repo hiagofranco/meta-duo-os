@@ -1,7 +1,7 @@
-From 22ec0c9a31efda30b4f2e1f97ee791dbbe9a7079 Mon Sep 17 00:00:00 2001
+From 10f11edf73bbd60664fcc418590e2271d8ac1bab Mon Sep 17 00:00:00 2001
 From: Hiago De Franco <hfranco@baylibre.com>
 Date: Thu, 1 Oct 2026 16:38:30 -0300
-Subject: [PATCH] riscv: dts: sophgo: add cv1800b ethernet support overlay
+Subject: [PATCH 1/2] riscv: dts: sophgo: add cv1800b ethernet support overlay
 
 The CV1800B SoC has a DWMAC controller connected to an internal 10/100
 Ethernet PHY. Both the MAC (gmac0) and the MDIO multiplexer used to
@@ -26,7 +26,7 @@ Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
  create mode 100644 arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso
 
 diff --git a/arch/riscv/boot/dts/sophgo/Makefile b/arch/riscv/boot/dts/sophgo/Makefile
-index d5c80d4ff005..adea990ad912 100644
+index 1ff69cf7f178..6a8d6f26327d 100644
 --- a/arch/riscv/boot/dts/sophgo/Makefile
 +++ b/arch/riscv/boot/dts/sophgo/Makefile
 @@ -1,5 +1,8 @@
@@ -36,8 +36,8 @@ index d5c80d4ff005..adea990ad912 100644
 +dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtb
 +dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtbo
  dtb-$(CONFIG_ARCH_SOPHGO) += cv1812h-huashan-pi.dtb
- dtb-$(CONFIG_ARCH_SOPHGO) += sg2000-milkv-duo-s.dtb
  dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-licheerv-nano-b.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-milkv-duo256m.dtb
 diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-eth.dtso
 new file mode 100644
 index 000000000000..52c85b4e0155
