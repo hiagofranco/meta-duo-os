@@ -1,6 +1,7 @@
 SUMMARY = "Standard full-featured Linux system for MilkV-Duo boards"
 
 IMAGE_INSTALL = "packagegroup-core-boot \
+                 packagegroup-base \
                  fastfetch \
                  resize-rootfs \
                  libgpiod-tools \
