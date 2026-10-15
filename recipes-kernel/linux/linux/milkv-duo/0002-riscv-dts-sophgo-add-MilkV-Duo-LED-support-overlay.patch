@@ -1,0 +1,70 @@
+From 8b513cda3f2f740bf6f83457c7ee24b7aadef0c3 Mon Sep 17 00:00:00 2001
+From: Hiago De Franco <hfranco@baylibre.com>
+Date: Tue, 13 Oct 2026 22:40:06 -0300
+Subject: [PATCH 2/2] riscv: dts: sophgo: add MilkV-Duo LED support overlay
+
+Add an overlay to make the on-board blue LED blink with 500ms interval
+as soons as the board boots.
+
+This mimics the Sophgo SDK v2 [1], but using the kernel DTS overlay
+instead.
+
+[1] https://github.com/milkv-duo/duo-buildroot-sdk-v2
+
+Upstream-Status: Pending
+Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
+---
+ arch/riscv/boot/dts/sophgo/Makefile           |  3 +++
+ .../sophgo/cv1800b-milkv-duo-led-blink.dtso   | 26 +++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-led-blink.dtso
+
+diff --git a/arch/riscv/boot/dts/sophgo/Makefile b/arch/riscv/boot/dts/sophgo/Makefile
+index adea990ad912..b2427c2fc54a 100644
+--- a/arch/riscv/boot/dts/sophgo/Makefile
++++ b/arch/riscv/boot/dts/sophgo/Makefile
+@@ -3,6 +3,9 @@ dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo.dtb
+ cv1800b-milkv-duo-eth-dtbs := cv1800b-milkv-duo.dtb cv1800b-milkv-duo-eth.dtbo
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-eth.dtbo
++cv1800b-milkv-duo-led-blink-dtbs := cv1800b-milkv-duo.dtb cv1800b-milkv-duo-led-blink.dtbo
++dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-led-blink.dtb
++dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo-led-blink.dtbo
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1812h-huashan-pi.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2000-milkv-duo-s.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-licheerv-nano-b.dtb
+diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-led-blink.dtso b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-led-blink.dtso
+new file mode 100644
+index 000000000000..ef51a059faa5
+--- /dev/null
++++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo-led-blink.dtso
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Make the LED blink with 500ms interval, just like the MilkV-Duo SDK from
++ * Sophgo.
++ *
++ * Copyright (c) 2026, Hiago De Franco <hfranco@baylibre.com>
++ */
++
++/dts-v1/;
++/plugin/;
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/leds/common.h>
++
++&{/} {
++	leds {
++		compatible = "gpio-leds";
++
++		led-0 {
++			gpios = <&portc 24 GPIO_ACTIVE_HIGH>;
++			color = <LED_COLOR_ID_BLUE>;
++			function = LED_FUNCTION_STATUS;
++			linux,default-trigger = "timer";
++		};
++	};
++};
+-- 
+2.53.0
+

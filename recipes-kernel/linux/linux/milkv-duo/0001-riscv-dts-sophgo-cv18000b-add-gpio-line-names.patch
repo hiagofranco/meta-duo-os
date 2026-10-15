@@ -1,0 +1,61 @@
+From 6070b8e638844262049cdbf4866db2484ffb14eb Mon Sep 17 00:00:00 2001
+From: Hiago De Franco <hfranco@baylibre.com>
+Date: Tue, 13 Oct 2026 22:10:57 -0300
+Subject: [PATCH 1/2] riscv: dts: sophgo: cv18000b: add gpio-line-names
+
+Add gpio-line-names for all ports based on the MilkV-Duo documentation
+pinout names [1].
+
+This makes the gpiod tool display the GPIO names on userspace.
+
+[1] https://milkv.io/docs/duo/getting-started/duo#duo-gpio-pinout
+
+Upstream-Status: Pending
+Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
+---
+ .../boot/dts/sophgo/cv1800b-milkv-duo.dts     | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
+index 0e6d79e6e3a4..34695abb1983 100644
+--- a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
++++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
+@@ -84,6 +84,35 @@ sdhci0-cd-pins {
+ 	};
+ };
+ 
++&porta {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",			/* 0-7 */
++		"", "", "", "", "", "", "GP14", "GP15",		/* 8-15 */
++		"GP12", "GP13", "", "", "", "", "GP18", "GP16",	/* 16-23 */
++		"GP17", "GP19", "GP21", "GP20", "GP0", "GP1";	/* 24-29 */
++};
++
++&portb {
++	gpio-line-names =
++		"", "", "", "GP26", "", "", "GP27";		/* 0-6 */
++};
++
++&portc {
++	gpio-line-names =
++		"", "", "", "", "", "", "", "",			/* 0-7 */
++		"", "GP10", "GP11", "", "", "", "", "",		/* 8-15 */
++		"", "", "", "", "", "", "", "",	"LED";		/* 16-24 */
++};
++
++/* PWR_GPIO */
++&porte {
++	gpio-line-names =
++		"", "", "", "", "GP22", "", "", "",			/* 0-7 */
++		"", "", "", "", "", "", "", "",				/* 8-15 */
++		"", "", "GP9", "GP4", "GP5", "GP8", "GP7", "GP6",	/* 16-23 */
++		"", "GP3", "GP2";					/* 24-26 */
++};
++
+ &sdhci0 {
+ 	pinctrl-0 = <&sdhci0_cfg>;
+ 	pinctrl-names = "default";
+-- 
+2.53.0
+
