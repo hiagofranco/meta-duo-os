@@ -7,3 +7,4 @@ SRC_URI:append:milkv-duo-common = " file://u-boot-fdt-support.cfg \
 				    "
 
 UBOOT_EXTLINUX_FDTOVERLAYS:milkv-duo = "/cv1800b-milkv-duo-eth.dtbo /cv1800b-milkv-duo-led-blink.dtbo"
+UBOOT_EXTLINUX_FDTOVERLAYS:milkv-duo256m = "/sg2002-milkv-duo256m-eth.dtbo"

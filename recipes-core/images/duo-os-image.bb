@@ -27,3 +27,4 @@ IMAGE_ROOTFS_EXTRA_SPACE:append = "${@bb.utils.contains("DISTRO_FEATURES", "syst
 IMAGE_BOOT_FILES:append:milkv-duo = " cv1800b-milkv-duo-eth.dtbo \
                                       cv1800b-milkv-duo-led-blink.dtbo \
                                       "
+IMAGE_BOOT_FILES:append:milkv-duo256m = " sg2002-milkv-duo256m-eth.dtbo"

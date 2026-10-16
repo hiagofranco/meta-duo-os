@@ -1,0 +1,69 @@
+From 684f066b6701815984d7101bcc0a1d210307d05c Mon Sep 17 00:00:00 2001
+From: Chen-Yu Yeh <chenyou910331@gmail.com>
+Date: Mon, 5 Oct 2026 17:37:48 +0800
+Subject: [PATCH 1/2] riscv: dts: sophgo: add Milk-V Duo 256M ethernet support
+ overlay
+
+The SG2002 has an internal 10/100 Ethernet PHY, but on the Milk-V Duo
+256M the Ethernet signals only reach the RJ45 connector on the optional
+USB & Ethernet IO board. The MAC (gmac0) and the MDIO multiplexer used
+to reach the internal PHY are already described in cv180x.dtsi but are
+disabled, and they cannot be enabled in the board devicetree because
+without the IO board the same pins may be used as GPIO.
+
+Add an overlay that enables them.
+
+Tested on Milk-V Duo 256M with the USB & Ethernet IO board: the link
+comes up at 100Mbps/Full, the interface gets an address via DHCP and
+passes traffic in both directions. Without the overlay, eth0 does not
+appear.
+
+Upstream-Status: Pending
+Reviewed-by: Hiago De Franco <hfranco@baylibre.com>
+Signed-off-by: Chen-Yu Yeh <chenyou910331@gmail.com>
+---
+ arch/riscv/boot/dts/sophgo/Makefile             |  3 +++
+ .../dts/sophgo/sg2002-milkv-duo256m-eth.dtso    | 17 +++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m-eth.dtso
+
+diff --git a/arch/riscv/boot/dts/sophgo/Makefile b/arch/riscv/boot/dts/sophgo/Makefile
+index 1ff69cf7f178..b55463a223be 100644
+--- a/arch/riscv/boot/dts/sophgo/Makefile
++++ b/arch/riscv/boot/dts/sophgo/Makefile
+@@ -3,6 +3,9 @@ dtb-$(CONFIG_ARCH_SOPHGO) += cv1800b-milkv-duo.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += cv1812h-huashan-pi.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-licheerv-nano-b.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-milkv-duo256m.dtb
++sg2002-milkv-duo256m-eth-dtbs := sg2002-milkv-duo256m.dtb sg2002-milkv-duo256m-eth.dtbo
++dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-milkv-duo256m-eth.dtb
++dtb-$(CONFIG_ARCH_SOPHGO) += sg2002-milkv-duo256m-eth.dtbo
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2042-milkv-pioneer.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2042-evb-v1.dtb
+ dtb-$(CONFIG_ARCH_SOPHGO) += sg2042-evb-v2.dtb
+diff --git a/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m-eth.dtso b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m-eth.dtso
+new file mode 100644
+index 000000000000..cc93746d932c
+--- /dev/null
++++ b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m-eth.dtso
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Enable ethernet on Milk-V Duo 256M with the USB & Ethernet IO board.
++ *
++ * Copyright (c) 2026, Chen-Yu Yeh <chenyou910331@gmail.com>
++ */
++
++/dts-v1/;
++/plugin/;
++
++&gmac0 {
++	status = "okay";
++};
++
++&mdio {
++	status = "okay";
++};
+-- 
+2.53.0
+

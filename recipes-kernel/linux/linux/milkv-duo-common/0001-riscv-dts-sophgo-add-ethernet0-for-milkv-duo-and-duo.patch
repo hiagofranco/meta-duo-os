@@ -1,7 +1,8 @@
-From 9160642a5bcdd5ab46d67fb4e9c3ee8d62d058cf Mon Sep 17 00:00:00 2001
+From b783cf965cb4bf7b6c399241d708b4e04337b7f2 Mon Sep 17 00:00:00 2001
 From: Hiago De Franco <hfranco@baylibre.com>
-Date: Fri, 16 Oct 2026 09:03:49 -0300
-Subject: [PATCH] riscv: dts: sophgo: cv1800b-milkv-duo: add ethernet0 alias
+Date: Fri, 16 Oct 2026 11:47:05 -0300
+Subject: [PATCH] riscv: dts: sophgo: add ethernet0 for milkv-duo and duo256m
+ boards
 
 Add the ethernet0 alias pointing to gmac0. Bootloaders such as U-Boot
 only pass the MAC address to the kernel for nodes referenced by an
@@ -17,15 +18,28 @@ node is enabled by the board, overlay or user configuration.
 Upstream-Status: Pending
 Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
 ---
- arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts    | 1 +
+ arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts | 1 +
+ 2 files changed, 2 insertions(+)
 
 diff --git a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
-index 9d736df9497a..1aab6b5512de 100644
+index 02848bae2e16..a90dd33ea4b6 100644
 --- a/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
 +++ b/arch/riscv/boot/dts/sophgo/cv1800b-milkv-duo.dts
-@@ -14,6 +14,7 @@ / {
+@@ -12,6 +12,7 @@ / {
  	compatible = "milkv,duo", "sophgo,cv1800b";
+ 
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 		serial2 = &uart2;
+diff --git a/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
+index b3540037f6b7..2305da25d87c 100644
+--- a/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
++++ b/arch/riscv/boot/dts/sophgo/sg2002-milkv-duo256m.dts
+@@ -15,6 +15,7 @@ / {
+ 	compatible = "milkv,duo256m", "sophgo,sg2002";
  
  	aliases {
 +		ethernet0 = &gmac0;

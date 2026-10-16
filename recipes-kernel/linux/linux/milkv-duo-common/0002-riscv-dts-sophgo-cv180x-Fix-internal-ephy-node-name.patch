@@ -1,0 +1,40 @@
+From 073b929b907bcf9bfbd475e927bcf30a1b65beb9 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Yeh <chenyou910331@gmail.com>
+Date: Mon, 5 Oct 2026 17:37:49 +0800
+Subject: [PATCH 2/2] riscv: dts: sophgo: cv180x: Fix internal ephy node name
+
+The internal EPHY node is named "phy@0" while its reg property is <1>.
+The unit-address should match the first entry of the reg property, but
+this is not checked by dtc for MDIO buses. The kernel confirms the PHY
+is indeed at address 1:
+
+  eth0: PHY [mdio_mux-0.0:01] driver [Generic PHY]
+
+Rename the node to ethernet-phy@1, which also follows the common naming
+convention for ethernet PHY nodes.
+
+Upstream-Status: Pending
+Fixes: ba1abacc57cb ("riscv: dts: sophgo: Add mdio multiplexer device for cv18xx")
+Reviewed-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Hiago De Franco <hfranco@baylibre.com>
+Signed-off-by: Chen-Yu Yeh <chenyou910331@gmail.com>
+---
+ arch/riscv/boot/dts/sophgo/cv180x.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/riscv/boot/dts/sophgo/cv180x.dtsi b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
+index 2e0c2db69ea8..a4f16854c387 100644
+--- a/arch/riscv/boot/dts/sophgo/cv180x.dtsi
++++ b/arch/riscv/boot/dts/sophgo/cv180x.dtsi
+@@ -71,7 +71,7 @@ internal_mdio: mdio@0 {
+ 				#size-cells = <0>;
+ 				reg = <0>;
+ 
+-				internal_ephy: phy@0 {
++				internal_ephy: ethernet-phy@1 {
+ 					compatible = "ethernet-phy-ieee802.3-c22";
+ 					reg = <1>;
+ 				};
+-- 
+2.53.0
+
