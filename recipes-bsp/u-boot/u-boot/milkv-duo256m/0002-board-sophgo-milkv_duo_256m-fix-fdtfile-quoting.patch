@@ -1,7 +1,7 @@
-From d9be1fd41ce875bde8931e9647eef14d54d20117 Mon Sep 17 00:00:00 2001
+From e4fae237a498f1076fe4fcd320954d248aba3d22 Mon Sep 17 00:00:00 2001
 From: Hiago De Franco <hfranco@baylibre.com>
 Date: Fri, 9 Oct 2026 11:38:23 -0300
-Subject: [PATCH] board: sophgo: milkv_duo_256m: fix fdtfile quoting
+Subject: [PATCH 2/2] board: sophgo: milkv_duo_256m: fix fdtfile quoting
 
 CONFIG_DEFAULT_DEVICE_TREE is a quoted string, so the quotes end up in
 the environment:
@@ -22,16 +22,16 @@ Signed-off-by: Hiago De Franco <hfranco@baylibre.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/board/sophgo/milkv_duo_256m/milkv_duo_256m.env b/board/sophgo/milkv_duo_256m/milkv_duo_256m.env
-index 4c1e17b53ca..4c9f53d0811 100644
+index 9f469e0fa97..c48bd5eceea 100644
 --- a/board/sophgo/milkv_duo_256m/milkv_duo_256m.env
 +++ b/board/sophgo/milkv_duo_256m/milkv_duo_256m.env
 @@ -1,5 +1,5 @@
  fdt_addr_r=0x84000000
 -fdtfile=CONFIG_DEFAULT_DEVICE_TREE.dtb
 +fdtfile=DEFAULT_DEVICE_TREE.dtb
+ fdtoverlay_addr_r=0x82480000
  kernel_addr_r=0x80200000
  kernel_comp_addr_r=0x88000000
- kernel_comp_size=0x4000000
 -- 
 2.53.0
 
